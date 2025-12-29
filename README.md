@@ -1,3 +1,3 @@
 # clone-tabnews
 
-Minha implementação do tabnews através curso.dev
+Minha implementação do tabnews através curso.dev.
