@@ -39,16 +39,16 @@ function DatabaseStatus() {
 
   if (!isLoading && data) {
     databaseText = data.dependencies.database;
-  }
 
-  return (
-    <>
-      <h2>Banco de dados</h2>
-      <div>
-        <div>Versão: {databaseText.version}</div>
-        <div>Máximo de conexões: {databaseText.max_connections}</div>
-        <div>Conexões abertas: {databaseText.opened_connections}</div>
-      </div>
-    </>
-  );
+    return (
+      <>
+        <h2>Banco de dados</h2>
+        <div>
+          <div>Versão: {databaseText.version}</div>
+          <div>Máximo de conexões: {databaseText.max_connections}</div>
+          <div>Conexões abertas: {databaseText.opened_connections}</div>
+        </div>
+      </>
+    );
+  }
 }
