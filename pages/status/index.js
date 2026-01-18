@@ -35,14 +35,13 @@ function DatabaseStatus() {
     refreshInterval: 2000,
   });
 
-  let databaseText = "Carregando ...";
+  let database = "Carregando ...";
 
   if (!isLoading && data) {
-    databaseText = data.dependencies.database;
+    const databaseText = data.dependencies.database;
 
-    return (
+    database = (
       <>
-        <h2>Banco de dados</h2>
         <div>
           <div>Versão: {databaseText.version}</div>
           <div>Máximo de conexões: {databaseText.max_connections}</div>
@@ -51,4 +50,11 @@ function DatabaseStatus() {
       </>
     );
   }
+
+  return (
+    <>
+      <h2>Banco de dados</h2>
+      <div>{database}</div>
+    </>
+  );
 }
