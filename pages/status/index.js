@@ -1,4 +1,3 @@
-import { database } from "pg/lib/defaults";
 import useSWR from "swr";
 
 async function fetchAPI(key) {
