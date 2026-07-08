@@ -115,7 +115,7 @@ const orchestrator = {
   deleteAllEmails,
   activateUser,
   extractUUID,
-  addFeatureToUser,
+  addFeaturesToUser: addFeatureToUser,
 };
 
 export default orchestrator;
