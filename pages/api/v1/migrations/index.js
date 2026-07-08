@@ -30,7 +30,7 @@ async function postHandler(request, response) {
 
   const secureOutputValues = authorization.filterOutput(
     userTryingToPost,
-    "create:migration",
+    "read:migration",
     migratedMigrations,
   );
 

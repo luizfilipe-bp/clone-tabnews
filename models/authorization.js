@@ -1,4 +1,33 @@
+import { InternalServerError } from "infra/errors.js";
+
+const availableFeatures = [
+  // USER
+  "create:user",
+  "read:user",
+  "read:user:self",
+  "update:user",
+  "update:user:others",
+
+  // SESSION
+  "create:session",
+  "read:session",
+
+  // ACTIVATION_TOKEN
+  "read:activation_token",
+
+  // MIGRATION
+  "create:migration",
+  "read:migration",
+
+  // STATUS
+  "read:status",
+  "read:status:all",
+];
+
 function can(user, feature, resource) {
+  validateUser(user);
+  validateFeature(feature);
+
   let authorized = false;
 
   if (user.features.includes(feature)) {
@@ -7,6 +36,7 @@ function can(user, feature, resource) {
 
   if (feature === "update:user" && resource) {
     authorized = false;
+
     if (user.id === resource.id || can(user, "update:user:others")) {
       authorized = true;
     }
@@ -16,6 +46,10 @@ function can(user, feature, resource) {
 }
 
 function filterOutput(user, feature, resource) {
+  validateUser(user);
+  validateFeature(feature);
+  validateResource(resource);
+
   if (feature === "read:user") {
     return {
       id: resource.id,
@@ -45,9 +79,9 @@ function filterOutput(user, feature, resource) {
         id: resource.id,
         token: resource.token,
         user_id: resource.user_id,
-        expires_at: resource.expires_at,
         created_at: resource.created_at,
         updated_at: resource.updated_at,
+        expires_at: resource.expires_at,
       };
     }
   }
@@ -56,24 +90,14 @@ function filterOutput(user, feature, resource) {
     return {
       id: resource.id,
       user_id: resource.user_id,
-      expires_at: resource.expires_at,
-      used_at: resource.used_at,
       created_at: resource.created_at,
       updated_at: resource.updated_at,
+      expires_at: resource.expires_at,
+      used_at: resource.used_at,
     };
   }
 
   if (feature === "read:migration") {
-    return resource.map((migration) => {
-      return {
-        path: migration.path,
-        name: migration.name,
-        timestamp: migration.timestamp,
-      };
-    });
-  }
-
-  if (feature === "create:migration") {
     return resource.map((migration) => {
       return {
         path: migration.path,
@@ -100,6 +124,32 @@ function filterOutput(user, feature, resource) {
     }
 
     return output;
+  }
+}
+
+function validateUser(user) {
+  if (!user || !user.features) {
+    throw new InternalServerError({
+      cause: "É necessário fornecer `user` no model `authorization`.",
+    });
+  }
+}
+
+function validateFeature(feature) {
+  if (!feature || !availableFeatures.includes(feature)) {
+    throw new InternalServerError({
+      cause:
+        "É necessário fornecer uma `feature` conhecida no model `authorization`.",
+    });
+  }
+}
+
+function validateResource(resource) {
+  if (!resource) {
+    throw new InternalServerError({
+      cause:
+        "É necessário fornecer um `resource` em `authorization.filterOutput()`.",
+    });
   }
 }
 
