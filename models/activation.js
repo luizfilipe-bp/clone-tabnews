@@ -105,7 +105,7 @@ async function markTokenAsUsed(activationTokenId) {
 
 async function sendEmailToUser(user, activationToken) {
   await email.send({
-    from: "Example <test@example.com>",
+    from: "Example <activation@luizfbp.dev.br>",
     to: user.email,
     subject: "Activate Your Account",
     text: `Hello ${user.username},\n\nPlease click the link below to activate your account:\n\n${webserver.origin}/cadastro/ativar/${activationToken.id}\n\nThank you!`,
