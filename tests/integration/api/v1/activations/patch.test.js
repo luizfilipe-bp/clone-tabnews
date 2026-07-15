@@ -139,6 +139,7 @@ describe("PATCH /api/v1/activations/[token_id]", () => {
       expect(activatedUser.features).toEqual([
         "create:session",
         "read:session",
+        "update:user",
       ]);
     });
 
@@ -171,7 +172,7 @@ describe("PATCH /api/v1/activations/[token_id]", () => {
     test("With valid token, but already logged in user", async () => {
       const user1 = await orchestrator.createUser();
       await orchestrator.activateUser(user1);
-      const user1SessionObject = await orchestrator.createSession(user1.id);
+      const user1SessionObject = await orchestrator.createSession(user1);
 
       const user2 = await orchestrator.createUser();
       const user2ActivationToken = await activation.create(user2.id);
@@ -192,7 +193,7 @@ describe("PATCH /api/v1/activations/[token_id]", () => {
 
       expect(responseBody).toEqual({
         name: "ForbiddenError",
-        message: "Você não possui permissão para executar esta ação.",
+        message: "Você não tem permissão para realizar esta ação.",
         action:
           'Verifique se o seu usuário possui a feature "read:activation_token"',
         status_code: 403,
