@@ -67,7 +67,7 @@ async function activateUserByUserId(userId) {
   if (!authorization.can(userToActivate, "read:activation_token")) {
     throw new ForbiddenError({
       message: "Você não pode mais utilizar tokens de ativação.",
-      action: "Entre em contrato com o suporte.",
+      action: "Entre em contato com o suporte.",
     });
   }
 
