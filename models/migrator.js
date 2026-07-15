@@ -1,4 +1,4 @@
-const { default: database } = require("infra/database");
+import database from "infra/database";
 import migrationRunner from "node-pg-migrate";
 import { resolve } from "node:path";
 
